@@ -17,7 +17,7 @@ int BinarySearchTreeTest()
 	bst1.FindNode(&a[3]);
 	printf("%p\n",bst1.FindNode(&a[5]));
 	bst1.MiddleOrder();
-	bst1.RemoveNode(&a[4]);
+	bst1.RemoveNode(&a[2]);
 	bst1.MiddleOrder();
 
 	return 0;

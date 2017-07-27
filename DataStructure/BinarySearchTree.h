@@ -218,7 +218,7 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// Has left and right subtree
 			else if (des->m_pLeft && des->m_pRight)
 			{
-				des->m_pPrev->m_pLeft = m_pTemp->m_pRight;
+				des->m_pPrev->m_pLeft = des->m_pRight;
 				Node<T> * right_smallest = des->m_pRight;
 				while (right_smallest->m_pLeft)
 				{
@@ -231,6 +231,7 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// leaf
 			else if (!des->m_pLeft && !des->m_pRight)
 			{
+				des->m_pPrev->m_pLeft = nullptr;
 				delete des;
 				des = nullptr;
 			}
@@ -255,7 +256,7 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// Has left and right subtree
 			else if (des->m_pLeft && des->m_pRight)
 			{
-				des->m_pPrev->m_pRight = m_pTemp->m_pRight;
+				des->m_pPrev->m_pRight = des->m_pRight;
 				Node<T> * right_smallest = des->m_pRight;
 				while (right_smallest->m_pLeft)
 				{
@@ -268,6 +269,7 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// leaf
 			else if (!des->m_pLeft && !des->m_pRight)
 			{
+				des->m_pPrev->m_pRight = nullptr;
 				delete des;
 				des = nullptr;
 			}

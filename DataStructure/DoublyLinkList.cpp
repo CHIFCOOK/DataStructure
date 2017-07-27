@@ -24,7 +24,7 @@ int DoublyLinkListTest()
 	list1.Traversal(false);
 	cout << endl;
 
-	cout << "LINKLIST_FIND_BY_DATA" << list1.FindByData(&a[2]) << endl;
+	cout << "LINKLIST_FIND_BY_DATA_" << list1.FindByData(&a[2]) << endl;
 	//delete list1;
 	//list1 = nullptr;
 
