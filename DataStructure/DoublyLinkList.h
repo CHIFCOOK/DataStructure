@@ -3,17 +3,18 @@
 
 
 template <class T>
-class List
+class DoublyLinkList
 {
 public:
-	List();
-	~List();
+	DoublyLinkList();
+	~DoublyLinkList();
 	void AddBack(T * p_elem);
 	bool AddByIndex(int m_nIndex, T * elem);
 	bool Traversal(bool select);
 	bool DeleteByIndex(int m_nIndex);
 	bool ClearAll();
 	Node<T>* FindByIndex(int m_nIndex);
+	Node<T>* FindByData(T*);
 private:
 	int m_ElemCount;
 	Node<T>* m_pHead;
@@ -23,7 +24,7 @@ private:
 };
 
 template <class T>
-List<T>::List()
+DoublyLinkList<T>::DoublyLinkList()
 {
 	m_pTemp = nullptr;
 	m_pHead = new Node<T>(nullptr, nullptr, nullptr);
@@ -31,9 +32,8 @@ List<T>::List()
 	m_ElemCount = 0;
 }
 
-
 template<class T>
-inline void List<T>::AddBack(T * p_elem)
+inline void DoublyLinkList<T>::AddBack(T * p_elem)
 {
 	cout << "AddBack " << p_elem << endl;
 	Node<T> * new_node = new Node<T>(p_elem, m_pTail, nullptr);
@@ -48,7 +48,7 @@ inline void List<T>::AddBack(T * p_elem)
 }
 
 template<class T>
-inline bool List<T>::AddByIndex(int m_nIndex, T * elem)
+inline bool DoublyLinkList<T>::AddByIndex(int m_nIndex, T * elem)
 {
 	cout << "AddByIndex " << m_nIndex << ":" << elem << endl;
 	if (!FindByIndex(m_nIndex))
@@ -83,9 +83,8 @@ inline bool List<T>::AddByIndex(int m_nIndex, T * elem)
 	return true;
 }
 
-
 template<class T>
-inline bool List<T>::ClearAll()
+inline bool DoublyLinkList<T>::ClearAll()
 {
 	if (m_ElemCount == 0)return false;
 
@@ -105,7 +104,7 @@ inline bool List<T>::ClearAll()
 }
 
 template<class T>
-inline Node<T>* List<T>::FindByIndex(int index)
+inline Node<T>* DoublyLinkList<T>::FindByIndex(int index)
 {
 	if (index > m_ElemCount || index < 0)
 		return nullptr;
@@ -116,18 +115,32 @@ inline Node<T>* List<T>::FindByIndex(int index)
 	return *m_ppIndirect;
 }
 
+template<class T>
+inline Node<T>* DoublyLinkList<T>::FindByData(T * data)
+{
+	Node<T> * ret = nullptr;
+	if (data)
+	{
+		m_ppIndirect = &(m_pHead->m_pNext);
+		while (*data != *((*m_ppIndirect)->m_pElem))
+			m_ppIndirect = &(*m_ppIndirect)->m_pNext;
+		ret = *m_ppIndirect;
+	}
+	return ret;
+}
 
 template <class T>
-List<T>::~List()
+DoublyLinkList<T>::~DoublyLinkList()
 {
 	ClearAll();
 	m_pHead = nullptr;
 	m_pTail = nullptr;
 	m_pTemp = nullptr;
+	m_ppIndirect = nullptr;
 }
 
 template<class T>
-inline bool List<T>::Traversal(bool select)
+inline bool DoublyLinkList<T>::Traversal(bool select)
 {
 	if (m_ElemCount == 0)
 		return false;
@@ -154,7 +167,7 @@ inline bool List<T>::Traversal(bool select)
 }
 
 template<class T>
-inline bool List<T>::DeleteByIndex(int index)
+inline bool DoublyLinkList<T>::DeleteByIndex(int index)
 {
 	if (!FindByIndex(index))return false;
 	m_pTemp = (*m_ppIndirect)->m_pPrev;

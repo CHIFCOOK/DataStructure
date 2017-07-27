@@ -3,13 +3,9 @@
 using namespace std;
 
 template <typename T>
-class List;
-
-template <typename T>
 class Node
 {
 public:
-	friend List<T>;
 	friend ostream &operator<< <>(ostream& out, const Node<T> * obj);
 	Node(T * obj, Node * prev = nullptr, Node * next = nullptr, Node * left = nullptr, Node*right = nullptr);
 	~Node();
@@ -27,7 +23,17 @@ public:
 template <typename T>
 ostream & operator<< <>(ostream & out, const Node<T> * obj)
 {
-	out << *(obj->m_pElem) << " index:" << obj->m_nIndex;
+	if (obj)
+	{
+		if (obj->m_pElem)
+		{
+			out << *(obj->m_pElem) << " index:" << obj->m_nIndex;
+		}
+	}
+	else
+	{
+		out << "null ptr";
+	}
 	return out;
 }
 
@@ -40,6 +46,7 @@ inline Node<T>::Node(T * obj, Node * prev = nullptr, Node * next = nullptr, Node
 	m_pNext = next;
 	m_pLeft = left;
 	m_pRight = right;
+	m_nIndex = 0;
 }
 
 
@@ -47,5 +54,11 @@ inline Node<T>::Node(T * obj, Node * prev = nullptr, Node * next = nullptr, Node
 template<typename T>
 inline Node<T>::~Node()
 {
+	m_pElem = nullptr;
+	m_pPrev = nullptr;
+	m_pNext = nullptr;
+	m_pLeft = nullptr;
+	m_pRight = nullptr;
+	m_nIndex = 0;
 	cout << "~Node()" << endl;
 }

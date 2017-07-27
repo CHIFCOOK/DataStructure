@@ -28,6 +28,11 @@ BinarySearchTree<T>::BinarySearchTree()
 template<typename T>
 BinarySearchTree<T>::~BinarySearchTree()
 {
+	delete m_pTemp;
+	delete m_pRoot;
+	m_pTemp = nullptr;
+	m_pRoot = nullptr;
+	m_ElemCount = 0;
 }
 
 template<typename T>
@@ -151,16 +156,23 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// Only has left subtree
 			if (des->m_pLeft && des->m_pRight == nullptr)
 			{
+				m_pTemp = des;
 				des = des->m_pLeft;
+				delete m_pTemp;
+				m_pTemp = nullptr;
 			}
 			// Only has right subtree
 			else if (des->m_pLeft == nullptr && des->m_pRight)
 			{
+				m_pTemp = des;
 				des = des->m_pRight;
+				delete m_pTemp;
+				m_pTemp = nullptr;
 			}
 			// Has left and right subtree
 			else if (des->m_pLeft && des->m_pRight)
 			{
+				m_pTemp = des;
 				Node<T> * right_smallest = des->m_pRight;
 				while (right_smallest->m_pLeft)
 				{
@@ -168,6 +180,8 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 				}
 				right_smallest->m_pLeft = des->m_pLeft;
 				des = des->m_pRight;
+				delete m_pTemp;
+				m_pTemp = nullptr;
 			}
 			// Is a leaf node
 			else if (!des->m_pLeft && !des->m_pRight)
@@ -190,12 +204,16 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 			// Only has left subtree
 			if (des->m_pLeft && des->m_pRight == nullptr)
 			{
-				des = des->m_pLeft;
+				des->m_pPrev->m_pLeft = des->m_pLeft;
+				delete des;
+				des = nullptr;
 			}
 			// Only has right subtree
 			else if (des->m_pLeft == nullptr && des->m_pRight)
 			{
-				des = des->m_pRight;
+				des->m_pPrev->m_pLeft = des->m_pRight;
+				delete des;
+				des = nullptr;
 			}
 			// Has left and right subtree
 			else if (des->m_pLeft && des->m_pRight)
@@ -207,42 +225,51 @@ void BinarySearchTree<T>::RemoveNode(T* data)
 					right_smallest = right_smallest->m_pLeft;
 				}
 				right_smallest->m_pLeft = des->m_pLeft;
+				delete des;
+				des = nullptr;
 			}
 			// leaf
 			else if (!des->m_pLeft && !des->m_pRight)
 			{
+				delete des;
 				des = nullptr;
 			}
-
-			// Is a right sub node
-			else if (des == des->m_pPrev->m_pRight)
+		}
+		// Is a right sub node
+		else if (des == des->m_pPrev->m_pRight)
+		{
+			// Only has left subtree
+			if (des->m_pLeft && des->m_pRight == nullptr)
 			{
-				// Only has left subtree
-				if (des->m_pLeft && des->m_pRight == nullptr)
+				des->m_pPrev->m_pRight = des->m_pLeft;
+				delete des;
+				des = nullptr;
+			}
+			// Only has right subtree
+			else if (des->m_pLeft == nullptr && des->m_pRight)
+			{
+				des->m_pPrev->m_pRight = des->m_pRight;
+				delete des;
+				des = nullptr;
+			}
+			// Has left and right subtree
+			else if (des->m_pLeft && des->m_pRight)
+			{
+				des->m_pPrev->m_pRight = m_pTemp->m_pRight;
+				Node<T> * right_smallest = des->m_pRight;
+				while (right_smallest->m_pLeft)
 				{
-					des = des->m_pLeft;
+					right_smallest = right_smallest->m_pLeft;
 				}
-				// Only has right subtree
-				else if (des->m_pLeft == nullptr && des->m_pRight)
-				{
-					des = des->m_pRight;
-				}
-				// Has left and right subtree
-				else if (des->m_pLeft && des->m_pRight)
-				{
-					des->m_pPrev->m_pRight = m_pTemp->m_pRight;
-					Node<T> * right_smallest = des->m_pRight;
-					while (right_smallest->m_pLeft)
-					{
-						right_smallest = right_smallest->m_pLeft;
-					}
-					right_smallest->m_pLeft = des->m_pLeft;
-				}
-				// leaf
-				else if (!des->m_pLeft && !des->m_pRight)
-				{
-					des = nullptr;
-				}
+				right_smallest->m_pLeft = des->m_pLeft;
+				delete des;
+				des = nullptr;
+			}
+			// leaf
+			else if (!des->m_pLeft && !des->m_pRight)
+			{
+				delete des;
+				des = nullptr;
 			}
 		}
 	}

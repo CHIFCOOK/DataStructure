@@ -11,7 +11,7 @@ int DoublyLinkListTest()
 	//list1->add_back(&a[2]);
 	//list1->add_back(&a[3]);
 
-	List<int> list1;
+	DoublyLinkList<int> list1;
 	list1.AddBack(&a[0]);
 	list1.AddBack(&a[1]);
 	list1.AddBack(&a[2]);
@@ -24,7 +24,7 @@ int DoublyLinkListTest()
 	list1.Traversal(false);
 	cout << endl;
 
-
+	cout << "LINKLIST_FIND_BY_DATA" << list1.FindByData(&a[2]) << endl;
 	//delete list1;
 	//list1 = nullptr;
 
