@@ -169,7 +169,7 @@ inline bool DoublyLinkList<T>::Traversal(bool select)
 template<class T>
 inline bool DoublyLinkList<T>::DeleteByIndex(int index)
 {
-	if (!FindByIndex(index))return false;
+	if (!m_ppIndirect = FindByIndex(index))return false;
 	m_pTemp = (*m_ppIndirect)->m_pPrev;
 	*m_ppIndirect = (*m_ppIndirect)->m_pNext;
 	*m_ppIndirect ? (*m_ppIndirect)->m_pPrev = m_pTemp : m_pTail = m_pTemp;
